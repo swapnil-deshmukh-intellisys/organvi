@@ -87,6 +87,43 @@ const ViewMoreDetails = ({ product, onClose }) => {
 
   const [reviews, setReviews] = useState([]);
   const [selectedImage, setSelectedImage] = useState(product.image);
+  const [loadingReviews, setLoadingReviews] = useState(false);
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [reviewMessage, setReviewMessage] = useState(null);
+
+  // Fetch reviews for the product
+  useEffect(() => {
+    if (product && product.id) {
+      fetchReviews();
+    }
+  }, [product]);
+
+  const fetchReviews = async () => {
+    setLoadingReviews(true);
+    try {
+      const response = await fetch(`http://localhost:5000/api/reviews/product/${product.id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setReviews(data);
+      } else {
+        console.error('Failed to fetch reviews');
+      }
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    } finally {
+      setLoadingReviews(false);
+    }
+  };
+
+  // Convert file to base64
+  const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
   // Calculate review statistics
   const getReviewStats = () => {
@@ -124,35 +161,87 @@ const ViewMoreDetails = ({ product, onClose }) => {
     }));
   };
 
-  const handleReviewSubmit = (e) => {
+  const handleReviewSubmit = async (e) => {
     e.preventDefault();
     
-    // Create new review object
-    const newReview = {
-      id: Date.now(), // Simple ID generation
-      name: reviewForm.name,
-      rating: reviewForm.rating,
-      comment: reviewForm.body,
-      productImage: product.image,
-      title: reviewForm.title,
-      recommend: reviewForm.recommend,
-      reviewImage: reviewForm.reviewImage
-    };
-    
-    // Add review to reviews array
-    setReviews(prevReviews => [...prevReviews, newReview]);
-    
-    console.log('Review submitted:', newReview);
-    setShowWriteReview(false);
-    setReviewForm({
-      name: '',
-      email: '',
-      rating: 0,
-      title: '',
-      body: '',
-      reviewImage: null,
-      recommend: false
-    });
+    if (!reviewForm.rating || reviewForm.rating < 1) {
+      setReviewMessage({ type: 'error', text: 'Please select a rating' });
+      return;
+    }
+
+    setSubmittingReview(true);
+    setReviewMessage(null);
+
+    try {
+      // Convert image to base64 if present
+      let reviewImageBase64 = '';
+      if (reviewForm.reviewImage) {
+        try {
+          reviewImageBase64 = await fileToBase64(reviewForm.reviewImage);
+        } catch (error) {
+          console.error('Error converting image:', error);
+        }
+      }
+
+      const reviewData = {
+        productId: product.id,
+        productName: product.name,
+        name: reviewForm.name,
+        email: reviewForm.email,
+        rating: reviewForm.rating,
+        title: reviewForm.title || '',
+        comment: reviewForm.body,
+        reviewImage: reviewImageBase64,
+        recommend: reviewForm.recommend || false
+      };
+
+      const response = await fetch('http://localhost:5000/api/reviews/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reviewData)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setReviewMessage({ 
+          type: 'success', 
+          text: 'Review submitted successfully! It will be reviewed by admin before appearing.' 
+        });
+        
+        // Reset form
+        setReviewForm({
+          name: '',
+          email: '',
+          rating: 0,
+          title: '',
+          body: '',
+          reviewImage: null,
+          recommend: false
+        });
+
+        // Close modal after 2 seconds
+        setTimeout(() => {
+          setShowWriteReview(false);
+          setReviewMessage(null);
+        }, 2000);
+      } else {
+        const error = await response.json();
+        setReviewMessage({ 
+          type: 'error', 
+          text: error.error || 'Failed to submit review. Please try again.' 
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      setReviewMessage({ 
+        type: 'error', 
+        text: 'An error occurred. Please try again.' 
+      });
+    } finally {
+      setSubmittingReview(false);
+    }
   };
 
   const handleQuestionSubmit = (e) => {
@@ -179,7 +268,11 @@ const ViewMoreDetails = ({ product, onClose }) => {
 
     switch (sortBy) {
       case 'Most Recent':
-        return sortedReviews.sort((a, b) => b.id - a.id); // Higher ID = more recent
+        return sortedReviews.sort((a, b) => {
+          const dateA = new Date(a.createdAt || a._id);
+          const dateB = new Date(b.createdAt || b._id);
+          return dateB - dateA;
+        });
       
       case 'Highest Rating':
         return sortedReviews.sort((a, b) => b.rating - a.rating);
@@ -188,21 +281,23 @@ const ViewMoreDetails = ({ product, onClose }) => {
         return sortedReviews.sort((a, b) => a.rating - b.rating);
       
       case 'Only Pictures':
-        return sortedReviews.filter(review => review.reviewImage && review.reviewImage.type && review.reviewImage.type.startsWith('image/'));
+        return sortedReviews.filter(review => review.reviewImage && review.reviewImage.length > 0 && review.reviewImage.startsWith('data:'));
       
       case 'Pictures First':
         return sortedReviews.sort((a, b) => {
-          const aHasImage = a.reviewImage && a.reviewImage.type && a.reviewImage.type.startsWith('image/');
-          const bHasImage = b.reviewImage && b.reviewImage.type && b.reviewImage.type.startsWith('image/');
+          const aHasImage = a.reviewImage && a.reviewImage.length > 0 && a.reviewImage.startsWith('data:');
+          const bHasImage = b.reviewImage && b.reviewImage.length > 0 && b.reviewImage.startsWith('data:');
           if (aHasImage && !bHasImage) return -1;
           if (!aHasImage && bHasImage) return 1;
-          return b.id - a.id; // Most recent for same type
+          const dateA = new Date(a.createdAt || a._id);
+          const dateB = new Date(b.createdAt || b._id);
+          return dateB - dateA;
         });
       
       case 'Picture first rating wise':
         return sortedReviews.sort((a, b) => {
-          const aHasImage = a.reviewImage && a.reviewImage.type && a.reviewImage.type.startsWith('image/');
-          const bHasImage = b.reviewImage && b.reviewImage.type && b.reviewImage.type.startsWith('image/');
+          const aHasImage = a.reviewImage && a.reviewImage.length > 0 && a.reviewImage.startsWith('data:');
+          const bHasImage = b.reviewImage && b.reviewImage.length > 0 && b.reviewImage.startsWith('data:');
           if (aHasImage && !bHasImage) return -1;
           if (!aHasImage && bHasImage) return 1;
           return b.rating - a.rating; // Higher rating for same type
@@ -575,16 +670,20 @@ const ViewMoreDetails = ({ product, onClose }) => {
           
               {/* Content */}
               <div className="review-content">
-                {activeTab === 'reviews' ? (
+                {loadingReviews ? (
+                  <div className="no-reviews">
+                    <p>Loading reviews...</p>
+                  </div>
+                ) : activeTab === 'reviews' ? (
                   sortedReviews.length > 0 ? (
                     <div className="reviews-grid">
                       {sortedReviews.map(review => (
-                        <div key={review.id} className="review-card">
+                        <div key={review._id || review.id} className="review-card">
                           <div className="review-header">
                             <div className="reviewer-info">
-                              {review.reviewImage && review.reviewImage.type && review.reviewImage.type.startsWith('image/') ? (
+                              {review.reviewImage && review.reviewImage.length > 0 && review.reviewImage.startsWith('data:') ? (
                                 <img 
-                                  src={URL.createObjectURL(review.reviewImage)} 
+                                  src={review.reviewImage} 
                                   alt="Review" 
                                   className="review-product-image" 
                                 />
@@ -605,12 +704,12 @@ const ViewMoreDetails = ({ product, onClose }) => {
                             </div>
                           </div>
                           <p className="review-comment">{review.comment}</p>
-                          {review.reviewImage && review.reviewImage.type && review.reviewImage.type.startsWith('video/') && (
+                          {review.reviewImage && review.reviewImage.length > 0 && review.reviewImage.startsWith('data:') && (
                             <div className="review-image-container">
-                              <video 
-                                src={URL.createObjectURL(review.reviewImage)} 
-                                controls 
-                                className="review-attached-video"
+                              <img 
+                                src={review.reviewImage} 
+                                alt="Review attachment" 
+                                className="review-attached-image"
                               />
                             </div>
                           )}
@@ -646,6 +745,11 @@ const ViewMoreDetails = ({ product, onClose }) => {
             </div>
             
             <form onSubmit={handleReviewSubmit} className="review-form">
+              {reviewMessage && (
+                <div className={`review-message ${reviewMessage.type === 'success' ? 'success' : 'error'}`}>
+                  {reviewMessage.text}
+                </div>
+              )}
               <div className="form-group">
                 <label>Name *</label>
                 <input
@@ -654,6 +758,7 @@ const ViewMoreDetails = ({ product, onClose }) => {
                   onChange={(e) => setReviewForm({...reviewForm, name: e.target.value})}
                   placeholder="Enter Your Name"
                   required
+                  disabled={submittingReview}
                 />
               </div>
               
@@ -665,6 +770,7 @@ const ViewMoreDetails = ({ product, onClose }) => {
                   onChange={(e) => setReviewForm({...reviewForm, email: e.target.value})}
                   placeholder="Enter Your Email"
                   required
+                  disabled={submittingReview}
                 />
               </div>
               
@@ -700,6 +806,7 @@ const ViewMoreDetails = ({ product, onClose }) => {
                   onChange={(e) => setReviewForm({...reviewForm, body: e.target.value})}
                   placeholder="Write your comments here"
                   required
+                  disabled={submittingReview}
                 />
               </div>
               
@@ -750,7 +857,9 @@ const ViewMoreDetails = ({ product, onClose }) => {
                 </label>
               </div>
               
-              <button type="submit" className="submit-btn">Submit Review</button>
+              <button type="submit" className="submit-btn" disabled={submittingReview}>
+                {submittingReview ? 'Submitting...' : 'Submit Review'}
+              </button>
             </form>
           </div>
         </div>

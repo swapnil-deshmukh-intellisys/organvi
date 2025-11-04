@@ -10,6 +10,7 @@ import ordersRouter from './src/routes/orders.js';
 import usersRouter from './src/routes/users.js';
 import productsRouter from './src/routes/products.js';
 import subscribersRouter from './src/routes/subscribers.js';
+import reviewsRouter from './src/routes/reviews.js';
 
 dotenv.config();
 
@@ -38,7 +39,9 @@ app.use('/', ordersRouter); // /orders... (optional)
 app.use('/api/users', usersRouter); // /api/users/login-mobile
 app.use('/api/products', productsRouter); // /api/products
 app.use('/api/subscribers', subscribersRouter); // /api/subscribers/subscribe, /api/subscribers
+app.use('/api/reviews', reviewsRouter); // /api/reviews/submit, /api/reviews/product/:productId, /api/reviews/all
 console.log('Subscribers routes registered at /api/subscribers');
+console.log('Reviews routes registered at /api/reviews');
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Backend running on port ${port}`));

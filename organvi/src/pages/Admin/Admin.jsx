@@ -7,12 +7,14 @@ import {
   Users,
   LogOut,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  Star
 } from 'lucide-react';
 import Products from './components/Products';
 import Orders from './components/Orders';
 import SupportMails from './components/SupportMails';
 import Subscribers from './components/Subscribers';
+import Reviews from './components/Reviews';
 import AdminLogin from './components/AdminLogin';
 import './Admin.css';
 
@@ -187,6 +189,14 @@ const Admin = () => {
               <span>Subscribers</span>
             </button>
             
+            <button 
+              className={`nav-item ${activeSection === 'reviews' ? 'active' : ''}`}
+              onClick={() => setActiveSection('reviews')}
+            >
+              <Star size={20} />
+              <span>Reviews</span>
+            </button>
+            
             <button className="nav-item logout-btn" onClick={handleLogout}>
               <LogOut size={20} />
               <span>Logout</span>
@@ -210,6 +220,10 @@ const Admin = () => {
 
           {activeSection === 'subscribers' && (
             <Subscribers />
+          )}
+
+          {activeSection === 'reviews' && (
+            <Reviews />
           )}
         </div>
       </div>
