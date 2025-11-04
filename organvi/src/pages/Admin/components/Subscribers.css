@@ -1,0 +1,190 @@
+/* Subscribers component styles */
+.admin-section {
+  max-width: 1200px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin-bottom: 0;
+}
+
+.subscribers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.subscribers-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: #E8F5E9;
+  border-radius: 8px;
+  color: #2E7D32;
+}
+
+.stats-count {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1B5E20;
+}
+
+.stats-label {
+  font-size: 0.9rem;
+  color: #388E3C;
+}
+
+.placeholder-content {
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+}
+
+.placeholder-content p {
+  font-size: 1.1rem;
+  color: #6B7280;
+  margin-bottom: 0.5rem;
+}
+
+.placeholder-subtext {
+  font-size: 0.95rem;
+  color: #9CA3AF;
+}
+
+.retry-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1.5rem;
+  background: #28A745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.retry-btn:hover {
+  background: #218838;
+}
+
+.subscribers-list {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  overflow: hidden;
+}
+
+.subscribers-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  background: #F9FAFB;
+  border-bottom: 2px solid #E5E7EB;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #F3F4F6;
+  transition: background 0.2s;
+}
+
+.table-row:hover {
+  background: #F9FAFB;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1F2937;
+  font-size: 0.95rem;
+}
+
+.email-cell {
+  font-weight: 500;
+}
+
+.date-cell {
+  color: #6B7280;
+  font-size: 0.9rem;
+}
+
+.cell-icon {
+  color: #9CA3AF;
+  flex-shrink: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .subscribers-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .table-header {
+    display: none;
+  }
+
+  .table-row {
+    padding: 1rem;
+    border-bottom: 2px solid #E5E7EB;
+  }
+
+  .table-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .table-cell::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #6B7280;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+
+  .email-cell::before {
+    content: 'Email Address';
+  }
+
+  .date-cell::before {
+    content: 'Subscribed Date';
+  }
+
+  .stats-count {
+    font-size: 1.1rem;
+  }
+}
+

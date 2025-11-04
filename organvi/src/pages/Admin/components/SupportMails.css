@@ -1,0 +1,31 @@
+/* SupportMails component styles */
+.admin-section {
+  max-width: 1200px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin-bottom: 2rem;
+}
+
+.placeholder-content {
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+}
+
+.placeholder-content p {
+  font-size: 1.1rem;
+  color: #6B7280;
+  margin-bottom: 0.5rem;
+}
+
+.placeholder-subtext {
+  font-size: 0.95rem;
+  color: #9CA3AF;
+}
+

@@ -1,0 +1,79 @@
+.contact-page {
+  padding-top: 80px;
+  animation: fadeIn 1s ease-out;
+}
+
+.contact-hero {
+  background: linear-gradient(135deg, var(--accent-orange) 0%, var(--soft-brown) 100%);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.contact-hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.contact-hero-description {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  animation: slideInRight 0.8s ease-out;
+}
+
+/* Responsive Design */
+
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .contact-hero {
+    padding: 3.5rem 0;
+  }
+
+  .contact-hero-title {
+    font-size: 2.8rem;
+  }
+
+  .contact-hero-description {
+    font-size: 1.15rem;
+  }
+}
+
+/* Medium mobile styles (481px - 767px) */
+@media (max-width: 768px) {
+  .contact-page {
+    padding-top: 70px;
+  }
+
+  .contact-hero {
+    padding: 3rem 0;
+  }
+
+  .contact-hero-title {
+    font-size: 2.5rem;
+  }
+
+  .contact-hero-description {
+    font-size: 1.1rem;
+  }
+}
+
+/* Small mobile styles (≤480px) */
+@media (max-width: 480px) {
+  .contact-page {
+    padding-top: 60px;
+  }
+
+  .contact-hero {
+    padding: 2.5rem 1rem;
+  }
+
+  .contact-hero-title {
+    font-size: 2rem;
+  }
+
+  .contact-hero-description {
+    font-size: 1rem;
+  }
+}

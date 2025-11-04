@@ -1,0 +1,31 @@
+{
+  "name": "Organvi - Organic Products",
+  "short_name": "Organvi",
+  "description": "Organvi is a certified organic farming and food processing company working in partnership with farmers to deliver pure, natural, and chemical-free products.",
+  "icons": [
+    {
+      "src": "/organvi-favicon-large.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/organvi-favicon-large.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/organvi-favicon-large.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/organvi-favicon-large.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#6f9c3d",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+}

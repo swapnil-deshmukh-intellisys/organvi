@@ -1,0 +1,410 @@
+/* Categories Page Styles */
+.categories-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 2rem 0;
+}
+
+/* GIF image styling with orange color effects */
+.category-gif {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  background: transparent !important;
+  filter: hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6) !important;
+  transition: all 0.3s ease;
+  border: none !important;
+  outline: none !important;
+}
+
+.category-box:hover .category-gif {
+  transform: scale(1.1);
+  filter: hue-rotate(40deg) saturate(2.5) brightness(1.3) contrast(1.5) !important;
+}
+
+/* Force orange color on all GIF images */
+.categories-page img.category-gif,
+.categories-page .category-box .category-icon img,
+.categories-page .category-box img {
+  filter: hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6) !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.categories-page .categories-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.categories-page .categories-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.categories-page .categories-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.categories-page .categories-title::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff6b35, #f7931e);
+  border-radius: 2px;
+}
+
+.categories-page .categories-subtitle {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-top: 1rem;
+}
+
+.categories-page .categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.categories-page .category-box {
+  background: white;
+  border-radius: 15px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.categories-page .category-box:hover {
+  transform: translateY(-5px);
+  border-color: #4caf50;
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
+}
+
+.categories-page .category-box.active {
+  border-color: #ff6b35;
+  background: linear-gradient(135deg, #fff5f0, #ffe8d6);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.2);
+}
+
+.categories-page .category-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  border: 2px solid #ff6b35;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+/* GIF image styling with orange color effects */
+.category-gif {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  filter: hue-rotate(30deg) saturate(1.2) brightness(1.1);
+  transition: all 0.3s ease;
+}
+
+.categories-page .category-box:hover .category-icon {
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+.categories-page .category-box:hover .category-gif {
+  transform: scale(1.1);
+  filter: hue-rotate(45deg) saturate(1.4) brightness(1.2);
+}
+
+.categories-page .category-box.active .category-icon {
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+.categories-page .category-box.active .category-gif {
+  transform: scale(1.05);
+  filter: hue-rotate(45deg) saturate(1.4) brightness(1.2);
+}
+
+.categories-page .icon-component {
+  font-size: 2rem;
+  color: #4caf50;
+  transition: transform 0.3s ease;
+}
+
+.categories-page .category-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.categories-page .category-box:hover .category-name {
+  color: #ff6b35;
+}
+
+.categories-page .products-section {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  margin-top: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: slideInUp 0.5s ease-out;
+}
+
+.categories-page .products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f8f9fa;
+}
+
+.categories-page .products-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.categories-page .close-products {
+  background: #ff6b35;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.categories-page .close-products:hover {
+  background: #e55a2b;
+  transform: scale(1.1);
+}
+
+.categories-page .products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.categories-page .product-item {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.categories-page .product-item:hover {
+  background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+  border-color: #4caf50;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.1);
+}
+
+.categories-page .product-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #4caf50, #66bb6a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.categories-page .product-emoji {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.categories-page .product-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2c3e50;
+  flex: 1;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design for Categories Page */
+
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .categories-page .categories-container {
+    padding: 0 1rem;
+  }
+  
+  .categories-page .categories-title {
+    font-size: 2.8rem;
+  }
+  
+  .categories-page .categories-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.8rem;
+  }
+  
+  .categories-page .category-box {
+    padding: 1.8rem;
+  }
+  
+  .categories-page .products-section {
+    padding: 2.5rem;
+  }
+  
+  .categories-page .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.2rem;
+  }
+}
+
+/* Medium mobile styles (481px - 767px) */
+@media (max-width: 768px) {
+  .categories-page .categories-container {
+    padding: 0 0.5rem;
+  }
+  
+  .categories-page .categories-title {
+    font-size: 2.5rem;
+  }
+  
+  .categories-page .categories-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .categories-page .category-box {
+    padding: 1.5rem;
+  }
+  
+  .categories-page .products-section {
+    padding: 2rem;
+  }
+  
+  .categories-page .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* Small mobile styles (≤480px) */
+@media (max-width: 480px) {
+  .categories-page {
+    padding: 1.5rem 0;
+  }
+  
+  .categories-page .categories-container {
+    padding: 0 0.75rem;
+  }
+  
+  .categories-page .categories-title {
+    font-size: 2rem;
+  }
+  
+  .categories-page .categories-subtitle {
+    font-size: 1rem;
+  }
+  
+  .categories-page .categories-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .categories-page .category-box {
+    padding: 1rem;
+  }
+  
+  .categories-page .category-icon {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .categories-page .icon-component {
+    font-size: 1.8rem;
+  }
+  
+  .categories-page .category-name {
+    font-size: 1.1rem;
+  }
+  
+  .categories-page .products-section {
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .categories-page .products-title {
+    font-size: 1.8rem;
+  }
+  
+  .categories-page .products-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+  
+  .categories-page .product-item {
+    padding: 1.2rem;
+  }
+  
+  .categories-page .product-icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .categories-page .product-emoji {
+    font-size: 1.3rem;
+  }
+  
+  .categories-page .product-name {
+    font-size: 0.95rem;
+  }
+}
+
+
+
+
+
+
+

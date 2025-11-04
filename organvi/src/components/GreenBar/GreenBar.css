@@ -1,0 +1,41 @@
+/* Green Bar - Full width horizontal bar above navbar */
+.green-bar {
+  width: 100%;
+  height: 25px;
+  background: linear-gradient(135deg, #4a7c59, #2d5016);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1001; /* Above navbar (z-index: 1000) */
+  box-shadow: 0 2px 4px rgba(74, 124, 89, 0.3);
+}
+
+/* Responsive Design */
+
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .green-bar {
+    height: 7px;
+  }
+}
+
+/* Mobile styles (≤768px) */
+@media (max-width: 768px) {
+  .green-bar {
+    height: 6px;
+  }
+}
+
+/* Small mobile styles (≤480px) */
+@media (max-width: 480px) {
+  .green-bar {
+    height: 5px;
+  }
+}
+
+/* Extra small mobile styles (≤360px) */
+@media (max-width: 360px) {
+  .green-bar {
+    height: 4px;
+  }
+}

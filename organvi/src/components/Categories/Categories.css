@@ -1,0 +1,490 @@
+.categories-container {
+  padding: 0;
+  max-width: 100%;
+  margin: 0;
+  background: #f8f7f3; /* Light textured off-white background */
+  border-top: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+/* Responsive design for categories */
+
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .categories-row {
+    gap: 0.3rem;
+    padding: 0.1rem 0.8rem;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    overflow: visible;
+  }
+  
+  .category-item {
+    min-width: 0;
+    padding: 0.2rem;
+    flex-shrink: 1;
+    flex: 1;
+  }
+  
+  .category-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .category-gif {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  .categories-container img.category-gif,
+  .categories-container .category-item .category-icon img,
+  .categories-container .category-item img {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  .categories-container img.category-gif,
+  .categories-container .category-item .category-icon img,
+  .categories-container .category-item img {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  
+  .category-name {
+    font-size: 0.6rem;
+    margin-top: 0.1rem;
+    line-height: 1.0;
+  }
+}
+
+/* Mobile styles (≤768px) */
+@media (max-width: 768px) {
+  .categories-container {
+    border-top: none; /* remove line between hero and categories on mobile */
+    margin-top: 0;
+    padding-top: 0;
+  }
+  .categories-row {
+    gap: 0.2rem;
+    padding: 0.1rem 0.5rem;
+    overflow: visible;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+  
+  .category-item {
+    min-width: 0;
+    padding: 0.1rem;
+    flex-shrink: 1;
+    flex: 1;
+  }
+  
+  .category-icon {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .category-gif {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  
+  .category-name {
+    font-size: 0.5rem;
+    line-height: 1.0;
+    margin-top: 0.05rem;
+  }
+}
+
+/* Small mobile styles (≤480px) */
+@media (max-width: 480px) {
+  .categories-container {
+    border-top: none; /* ensure no gap on small mobile */
+    margin-top: 0;
+    padding-top: 0;
+  }
+  .categories-row {
+    gap: 0.1rem;
+    padding: 0.05rem 0.3rem;
+    overflow: visible;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+  
+  .category-item {
+    min-width: 0;
+    padding: 0.05rem;
+    flex-shrink: 1;
+    flex: 1;
+  }
+  
+  .category-icon {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .category-gif {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  
+  .category-name {
+    font-size: 0.45rem;
+    line-height: 1.0;
+    margin-top: 0.02rem;
+  }
+}
+
+/* Extra small mobile styles (≤360px) */
+@media (max-width: 360px) {
+  .categories-container {
+    border-top: none; /* ensure no gap on extra small mobile */
+    margin-top: 0;
+    padding-top: 0;
+  }
+  .categories-row {
+    gap: 0.05rem;
+    padding: 0.02rem 0.2rem;
+    overflow: visible;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+  
+  .category-item {
+    min-width: 0;
+    padding: 0.02rem;
+    flex-shrink: 1;
+    flex: 1;
+  }
+  
+  .category-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .category-gif {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .category-name {
+    font-size: 0.4rem;
+    line-height: 1.0;
+    margin-top: 0.01rem;
+  }
+}
+
+/* No scrollbar needed - categories fit in single row */
+
+.categories-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: nowrap;
+  background: #f8f7f3; /* Light textured off-white background */
+  padding: 0.1rem 1.5rem; /* Minimal top & bottom padding */
+  max-width: 100%;
+  overflow: visible;
+}
+
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  padding: 0.1rem;
+  min-width: 0;
+  background: transparent;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  flex: 1;
+  flex-shrink: 1;
+}
+
+.category-item:hover {
+  background: transparent;
+}
+
+.category-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 0.1rem;
+  transition: transform 0.3s ease;
+}
+
+.category-item:hover .category-icon {
+  transform: translateY(-4px);
+}
+
+.category-image {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(90deg) brightness(0.8) contrast(1.2);
+}
+
+/* GIF image styling with consistent green color */
+.category-gif {
+  width: 44px !important;
+  height: 44px !important;
+  object-fit: contain;
+  background: transparent !important;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(90deg) brightness(0.8) contrast(1.2) !important;
+  transition: all 0.3s ease;
+  border: none !important;
+  outline: none !important;
+}
+
+.category-item:hover .category-gif {
+  transform: scale(1.1);
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2500%) hue-rotate(100deg) brightness(1.0) contrast(1.4) !important;
+}
+
+/* Additional specific styling to ensure GIF changes are applied */
+.categories-container .category-item .category-icon .category-gif {
+  background: transparent !important;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(90deg) brightness(0.8) contrast(1.2) !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.categories-container .category-item:hover .category-icon .category-gif {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2500%) hue-rotate(100deg) brightness(1.0) contrast(1.4) !important;
+}
+
+/* Force consistent green color on all GIF images */
+.categories-container img.category-gif,
+.categories-container .category-item .category-icon img,
+.categories-container .category-item img {
+  width: 44px !important;
+  height: 44px !important;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(90deg) brightness(0.8) contrast(1.2) !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.category-name {
+  font-size: 0.8rem !important; /* slightly larger */
+  font-weight: 500;
+  color: black;
+  text-align: center;
+  line-height: 1.0;
+  margin-top: 0.05rem;
+}
+
+/* Responsive Design */
+
+/* Large Desktop (1200px+) */
+@media (min-width: 1200px) {
+  .categories-container {
+    padding: 0 2rem;
+  }
+  
+  .categories-row {
+    gap: 3rem;
+  }
+  
+  .category-item {
+    min-width: 140px;
+    padding: 0.5rem;
+  }
+  
+  .category-icon {
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+  
+  .category-image {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .category-gif {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  
+  .category-name {
+    font-size: 0.8rem !important; /* slightly larger */
+  }
+}
+
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .categories-container {
+    padding: 0 1.5rem;
+  }
+  
+  .categories-row {
+    gap: 1.5rem;
+    flex-wrap: nowrap;
+  }
+  
+  .category-item {
+    min-width: 110px;
+    padding: 0.5rem;
+    flex: 1;
+  }
+  
+  .category-icon {
+    width: 45px;
+    height: 45px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+  
+  .category-image {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .category-gif {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  
+  .category-name {
+    font-size: 0.7rem !important;
+  }
+}
+
+/* Medium mobile styles (481px - 767px) */
+@media (max-width: 768px) {
+  .categories-container {
+    padding: 0 1rem;
+  }
+  
+  .categories-row {
+    gap: 0.8rem;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    padding: 0.1rem 1rem;
+  }
+  
+  .category-item {
+    min-width: 0;
+    padding: 0.2rem;
+    flex: 1;
+  }
+  
+  .category-icon {
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+  
+  .category-image {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .category-gif {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  
+  .category-name {
+    font-size: 0.8rem !important; /* larger text for mobile */
+    line-height: 1.1;
+  }
+}
+
+/* Small mobile styles (≤480px) */
+@media (max-width: 480px) {
+  .categories-container {
+    padding: 0 0.5rem;
+  }
+  
+  .categories-row {
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0.05rem 0.5rem;
+  }
+  
+  .category-item {
+    min-width: 0;
+    padding: 0.1rem;
+    flex: 1;
+  }
+  
+  .category-icon {
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+  
+  .category-image {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .category-gif {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  
+  .category-name {
+    font-size: 0.7rem !important; /* larger text for small mobile */
+    line-height: 1.1;
+    margin-top: 0.05rem;
+  }
+}
+
+/* Extra small mobile styles (≤360px) */
+@media (max-width: 360px) {
+  .categories-container {
+    padding: 0 0.3rem;
+  }
+  
+  .categories-row {
+    gap: 0.3rem;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0.02rem 0.3rem;
+  }
+  
+  .category-item {
+    min-width: 0;
+    padding: 0.05rem;
+    flex: 1;
+  }
+  
+  .category-icon {
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+  
+  .category-image {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .category-gif {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  
+  .category-name {
+    font-size: 0.6rem !important; /* larger text for extra small mobile */
+    line-height: 1.1;
+  }
+}
