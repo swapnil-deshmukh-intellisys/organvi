@@ -24,13 +24,31 @@ app.use(morgan('dev'));
 const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://Shraddha_intellisys:5mW4EXctF9huknmD@cluster0.xgwvgez.mongodb.net/Organvi';
 const dbName = process.env.MONGODB_DB || 'organvi';
 
+// Connect to MongoDB with timeout and better error handling
 mongoose
-  .connect(mongoUri, { dbName })
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.error('MongoDB connection error', err));
+  .connect(mongoUri, { 
+    dbName,
+    serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+    socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+  })
+  .then(() => {
+    console.log('MongoDB connected successfully');
+  })
+  .catch((err) => {
+    console.error('MongoDB connection error:', err.message);
+    // Don't exit - let the server start even if DB connection fails
+    // The app can handle DB errors gracefully
+  });
 
 app.get('/', (_req, res) => res.json({ status: 'ok' }));
-app.get('/health', (_req, res) => res.json({ status: 'ok' }));
+app.get('/health', (_req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+  res.json({ 
+    status: 'ok', 
+    database: dbStatus,
+    timestamp: new Date().toISOString()
+  });
+});
 
 // Mount routes (backwards-compatible paths kept)
 app.use('/', paymentsRouter); // /create-order, /verify-payment
@@ -44,6 +62,11 @@ console.log('Subscribers routes registered at /api/subscribers');
 console.log('Reviews routes registered at /api/reviews');
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Backend running on port ${port}`));
+const host = process.env.HOST || '0.0.0.0';
+
+app.listen(port, host, () => {
+  console.log(`Backend running on ${host}:${port}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+});
 
 
