@@ -1,4 +1,5 @@
 // Shiprocket utility functions
+import API_ENDPOINTS from '../config/api';
 
 export const createShipmentData = (orderData, customerDetails, shippingAddress, cartItems) => {
   return {
@@ -25,7 +26,7 @@ export const createShipmentData = (orderData, customerDetails, shippingAddress, 
 
 export const createShipment = async (shipmentData) => {
   try {
-    const response = await fetch('http://localhost:5000/create-shipment', {
+    const response = await fetch(API_ENDPOINTS.SHIPROCKET.CREATE_SHIPMENT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -47,7 +48,7 @@ export const createShipment = async (shipmentData) => {
 
 export const trackShipment = async (shipmentId) => {
   try {
-    const response = await fetch(`http://localhost:5000/track-shipment/${shipmentId}`);
+    const response = await fetch(API_ENDPOINTS.SHIPROCKET.TRACK_SHIPMENT(shipmentId));
     
     if (response.ok) {
       const result = await response.json();
@@ -63,7 +64,7 @@ export const trackShipment = async (shipmentId) => {
 
 export const getShipmentDetails = async (orderId) => {
   try {
-    const response = await fetch(`http://localhost:5000/shipment-details/${orderId}`);
+    const response = await fetch(API_ENDPOINTS.SHIPROCKET.SHIPMENT_DETAILS(orderId));
     
     if (response.ok) {
       const result = await response.json();

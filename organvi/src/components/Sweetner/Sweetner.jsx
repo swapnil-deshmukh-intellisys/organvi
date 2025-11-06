@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import { syncWishlistToBackend } from '../../utils/syncUserData';
+import API_ENDPOINTS from '../../config/api';
 // import Filter from '../Filter/Filter';
 import './Sweetner.css';
 import ViewMoreDetails from '../Pulses/ViewMoreDetails';
@@ -135,7 +136,7 @@ const Sweetener = () => {
     const fetchBackendProducts = async () => {
       try {
         setProductsLoading(true);
-        const response = await fetch('http://localhost:5000/api/products?category=sweetener');
+        const response = await fetch(API_ENDPOINTS.PRODUCTS.BY_CATEGORY('sweetener'));
         if (response.ok) {
           const products = await response.json();
           const formatted = products.map((p, idx) => ({

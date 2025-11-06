@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, User, Mail } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
+import API_ENDPOINTS from '../../config/api';
 import './UserRegistration.css';
 
 const UserRegistration = ({ onComplete }) => {
@@ -65,7 +66,7 @@ const UserRegistration = ({ onComplete }) => {
       const digits = String(mobile).replace(/\D/g, '');
       
       // Update user profile in backend
-      const response = await fetch('http://localhost:5000/api/users/profile', {
+      const response = await fetch(API_ENDPOINTS.USERS.PROFILE, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

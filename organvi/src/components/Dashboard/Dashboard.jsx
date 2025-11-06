@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import API_ENDPOINTS from '../../config/api';
 import { 
   Grid3X3, 
   MapPin, 
@@ -113,7 +114,7 @@ const Dashboard = () => {
   const fetchOrdersFromBackend = async (mobile) => {
     try {
       const digits = String(mobile).replace(/\D/g, '');
-      const response = await fetch(`http://localhost:5000/orders?userMobile=${digits}`);
+      const response = await fetch(API_ENDPOINTS.ORDERS.BY_USER(digits));
       if (response.ok) {
         const backendOrders = await response.json();
         setOrders(backendOrders || []);
@@ -174,7 +175,7 @@ const Dashboard = () => {
 
     try {
       const digits = String(mobile).replace(/\D/g, '');
-      const response = await fetch(`http://localhost:5000/cancel-order/${selectedOrder.orderId}`, {
+      const response = await fetch(API_ENDPOINTS.ORDERS.CANCEL(selectedOrder.orderId), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

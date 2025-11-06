@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Star, Check, X, Trash2, Filter } from 'lucide-react';
+import API_ENDPOINTS from '../../../config/api';
 import './Reviews.css';
 
 const Reviews = () => {
@@ -18,8 +19,8 @@ const Reviews = () => {
       setLoading(true);
       setError('');
       const url = filterStatus === 'all' 
-        ? 'http://localhost:5000/api/reviews/all'
-        : `http://localhost:5000/api/reviews/all?status=${filterStatus}`;
+        ? API_ENDPOINTS.REVIEWS.ALL
+        : `${API_ENDPOINTS.REVIEWS.ALL}?status=${filterStatus}`;
       
       const response = await fetch(url);
       
@@ -40,7 +41,7 @@ const Reviews = () => {
   const handleApprove = async (reviewId) => {
     try {
       setActionLoading(reviewId);
-      const response = await fetch(`http://localhost:5000/api/reviews/${reviewId}/approve`, {
+      const response = await fetch(API_ENDPOINTS.REVIEWS.APPROVE(reviewId), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -64,7 +65,7 @@ const Reviews = () => {
   const handleReject = async (reviewId) => {
     try {
       setActionLoading(reviewId);
-      const response = await fetch(`http://localhost:5000/api/reviews/${reviewId}/reject`, {
+      const response = await fetch(API_ENDPOINTS.REVIEWS.REJECT(reviewId), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -92,7 +93,7 @@ const Reviews = () => {
 
     try {
       setActionLoading(reviewId);
-      const response = await fetch(`http://localhost:5000/api/reviews/${reviewId}`, {
+      const response = await fetch(API_ENDPOINTS.REVIEWS.DELETE(reviewId), {
         method: 'DELETE'
       });
 

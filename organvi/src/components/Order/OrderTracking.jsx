@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { trackShipment, getShipmentDetails } from '../../utils/shiprocketUtils';
+import API_ENDPOINTS from '../../config/api';
 import './OrderTracking.css';
 import truckIcon from '../../assets/truck.png';
 import checkIcon from '../../assets/check.png';
@@ -24,7 +25,7 @@ const OrderTracking = () => {
   const testShiprocketConnection = async () => {
     try {
       console.log('Testing Shiprocket connection...');
-      const response = await fetch('http://localhost:5000/shiprocket-token');
+      const response = await fetch(API_ENDPOINTS.SHIPROCKET.TOKEN);
       const result = await response.json();
       console.log('Shiprocket token response:', result);
       return result;

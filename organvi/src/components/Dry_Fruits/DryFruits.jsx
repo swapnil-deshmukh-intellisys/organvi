@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API_ENDPOINTS from '../../config/api';
 // import Filter from '../Filter/Filter';
 import './DryFruits.css';
 import ViewMoreDetails from '../Pulses/ViewMoreDetails';
@@ -112,7 +113,7 @@ const DryFruits = () => {
     const fetchBackendProducts = async () => {
       try {
         setProductsLoading(true);
-        const response = await fetch('http://localhost:5000/api/products?category=dryfruits');
+        const response = await fetch(API_ENDPOINTS.PRODUCTS.BY_CATEGORY('dryfruits'));
         if (response.ok) {
           const products = await response.json();
           const formatted = products.map((p, idx) => ({

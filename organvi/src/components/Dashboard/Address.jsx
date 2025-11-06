@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Plus, Edit, Trash2, X } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
+import API_ENDPOINTS from '../../config/api';
 import './Address.css';
 
 const Address = () => {
@@ -128,7 +129,7 @@ const Address = () => {
 
     try {
       const digits = String(mobile).replace(/\D/g, '');
-      const response = await fetch(`http://localhost:5000/api/users/addresses/${addressId}?mobile=${digits}`, {
+      const response = await fetch(API_ENDPOINTS.USERS.ADDRESS(addressId, digits), {
         method: 'DELETE'
       });
 
@@ -176,7 +177,7 @@ const Address = () => {
 
     try {
       const digits = String(mobile).replace(/\D/g, '');
-      const response = await fetch('http://localhost:5000/api/users/addresses', {
+      const response = await fetch(API_ENDPOINTS.USERS.ADDRESSES, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

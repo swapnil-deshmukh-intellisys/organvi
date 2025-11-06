@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
+import API_ENDPOINTS from '../../config/api';
 // import OTPVerification from './OTPVerification';
 import UserRegistration from './UserRegistration';
 import Congratulations from './Congratulations';
@@ -39,7 +40,7 @@ const Account = () => {
       // Check with email
       const emailLower = identifier.trim().toLowerCase();
       try {
-        const response = await fetch(`http://localhost:5000/api/users/email/${encodeURIComponent(emailLower)}`);
+        const response = await fetch(API_ENDPOINTS.USERS.EMAIL(emailLower));
         if (response.ok) {
           const data = await response.json();
           if (data.user?.password) {
@@ -59,7 +60,7 @@ const Account = () => {
       const digits = identifier.replace(/\D/g, '');
       if (digits.length >= 10) {
         try {
-          const response = await fetch(`http://localhost:5000/api/users/mobile/${digits}`);
+          const response = await fetch(API_ENDPOINTS.USERS.MOBILE(digits));
           if (response.ok) {
             const data = await response.json();
             if (data.user?.password) {
@@ -112,7 +113,7 @@ const Account = () => {
       
       if (password || requiresPassword) {
         // Login with email/mobile + password
-        response = await fetch('http://localhost:5000/api/users/login', {
+        response = await fetch(API_ENDPOINTS.USERS.LOGIN, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
@@ -128,7 +129,7 @@ const Account = () => {
            return;
          }
         
-        response = await fetch('http://localhost:5000/api/users/login-mobile', {
+        response = await fetch(API_ENDPOINTS.USERS.LOGIN_MOBILE, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 

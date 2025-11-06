@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API_ENDPOINTS from '../../config/api';
 import './RazorpayCheckout.css';
 
 const RazorpayCheckout = ({ cartItems, totalAmount, onPaymentSuccess, onPaymentFailure }) => {
@@ -25,7 +26,7 @@ const RazorpayCheckout = ({ cartItems, totalAmount, onPaymentSuccess, onPaymentF
   // Create order on backend
   const createOrder = async (amount) => {
     try {
-      const response = await fetch('http://localhost:5000/create-order', {
+      const response = await fetch(API_ENDPOINTS.PAYMENT.CREATE_ORDER, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

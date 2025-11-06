@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Calendar, Users } from 'lucide-react';
+import API_ENDPOINTS from '../../../config/api';
 import './Subscribers.css';
 
 const Subscribers = () => {
@@ -15,7 +16,7 @@ const Subscribers = () => {
     try {
       setLoading(true);
       setError('');
-      const response = await fetch('http://localhost:5000/api/subscribers');
+      const response = await fetch(API_ENDPOINTS.SUBSCRIBERS.BASE);
       
       if (!response.ok) {
         throw new Error('Failed to fetch subscribers');

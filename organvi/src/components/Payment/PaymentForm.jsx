@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import API_ENDPOINTS from '../../config/api';
 import './PaymentForm.css';
 import upiIcon from '../../assets/upi (1).png';
 import cardIcon from '../../assets/mastercard.png';
@@ -63,7 +64,7 @@ const PaymentForm = ({ cartItems, totalAmount, onPaymentSuccess, onPaymentFailur
   // Create order on backend
   const createOrder = async (amount) => {
     try {
-      const response = await fetch('http://localhost:5000/create-order', {
+      const response = await fetch(API_ENDPOINTS.PAYMENT.CREATE_ORDER, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -155,7 +156,7 @@ const PaymentForm = ({ cartItems, totalAmount, onPaymentSuccess, onPaymentFailur
 
         console.log('Creating Shiprocket shipment:', shipmentData);
         
-        const shipmentResponse = await fetch('http://localhost:5000/create-shipment', {
+        const shipmentResponse = await fetch(API_ENDPOINTS.SHIPROCKET.CREATE_SHIPMENT, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

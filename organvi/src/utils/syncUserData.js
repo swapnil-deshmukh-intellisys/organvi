@@ -1,6 +1,7 @@
 /**
  * Utility functions to sync user data (cart, wishlist) with backend
  */
+import API_ENDPOINTS from '../config/api';
 
 export const syncCartToBackend = async (cartItems, mobile) => {
   if (!mobile) {
@@ -10,7 +11,7 @@ export const syncCartToBackend = async (cartItems, mobile) => {
 
   try {
     const digits = String(mobile).replace(/\D/g, '');
-    const response = await fetch('http://localhost:5000/api/users/cart', {
+    const response = await fetch(API_ENDPOINTS.USERS.CART, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -37,7 +38,7 @@ export const syncWishlistToBackend = async (wishlistItems, mobile) => {
 
   try {
     const digits = String(mobile).replace(/\D/g, '');
-    const response = await fetch('http://localhost:5000/api/users/wishlist', {
+    const response = await fetch(API_ENDPOINTS.USERS.WISHLIST, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

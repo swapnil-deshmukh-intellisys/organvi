@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import API_ENDPOINTS from '../../../config/api';
 import './Products.css';
 
 const CATEGORY_KEYS = {
@@ -10,7 +11,7 @@ const CATEGORY_KEYS = {
 
 const getKeyForCategory = (category) => CATEGORY_KEYS[category] || 'pulses';
 
-const API_BASE = 'http://localhost:5000/api/products';
+const API_BASE = API_ENDPOINTS.PRODUCTS.BASE;
 
 const Products = ({ category }) => {
   const categoryKey = useMemo(() => getKeyForCategory(category), [category]);
@@ -328,7 +329,7 @@ const Products = ({ category }) => {
       }
     } catch (error) {
       console.error(isEdit ? 'Error updating product:' : 'Error adding product:', error);
-      alert(`Failed to ${isEdit ? 'update' : 'add'} product: ${error.message || 'Network error. Please check if backend is running on http://localhost:5000'}`);
+      alert(`Failed to ${isEdit ? 'update' : 'add'} product: ${error.message || 'Network error. Please check if backend is running.'}`);
     }
   };
 

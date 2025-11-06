@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Home, Leaf, Shield } from 'lucide-react';
+import API_ENDPOINTS from '../../config/api';
 import './ViewMoreDetails.css';
 import closeGif from '../../assets/close.gif';
 
@@ -101,7 +102,7 @@ const ViewMoreDetails = ({ product, onClose }) => {
   const fetchReviews = async () => {
     setLoadingReviews(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/reviews/product/${product.id}`);
+      const response = await fetch(API_ENDPOINTS.REVIEWS.BY_PRODUCT(product.id));
       if (response.ok) {
         const data = await response.json();
         setReviews(data);
@@ -195,7 +196,7 @@ const ViewMoreDetails = ({ product, onClose }) => {
         recommend: reviewForm.recommend || false
       };
 
-      const response = await fetch('http://localhost:5000/api/reviews/submit', {
+      const response = await fetch(API_ENDPOINTS.REVIEWS.SUBMIT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

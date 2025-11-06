@@ -8,6 +8,7 @@ import upiLogo from '../../assets/upi (1).png';
 import emailIcon from '../../assets/email.gif';
 import phoneIcon from '../../assets/phoneno.gif';
 import addressIcon from '../../assets/address.gif';
+import API_ENDPOINTS from '../../config/api';
 import './Footer.css';
 
 const Footer = () => {
@@ -28,7 +29,7 @@ const Footer = () => {
 
         try {
             setSubmitting(true);
-            const response = await fetch('http://localhost:5000/api/subscribers/subscribe', {
+            const response = await fetch(API_ENDPOINTS.SUBSCRIBERS.SUBSCRIBE, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email.trim() })

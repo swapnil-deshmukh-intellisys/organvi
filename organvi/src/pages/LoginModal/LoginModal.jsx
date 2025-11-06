@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
+import API_ENDPOINTS from '../../config/api';
 import './LoginModal.css'; // ✅ Correct (relative to same folder)
 
 
@@ -21,7 +22,7 @@ const LoginModal = ({ onClose }) => {
       // Check with email
       const emailLower = identifier.trim().toLowerCase();
       try {
-        const response = await fetch(`http://localhost:5000/api/users/email/${encodeURIComponent(emailLower)}`);
+        const response = await fetch(API_ENDPOINTS.USERS.EMAIL(emailLower));
         if (response.ok) {
           const data = await response.json();
           if (data.user?.password) {
@@ -41,7 +42,7 @@ const LoginModal = ({ onClose }) => {
       const digits = identifier.replace(/\D/g, '');
       if (digits.length >= 10) {
         try {
-          const response = await fetch(`http://localhost:5000/api/users/mobile/${digits}`);
+          const response = await fetch(API_ENDPOINTS.USERS.MOBILE(digits));
           if (response.ok) {
             const data = await response.json();
             if (data.user?.password) {
@@ -94,7 +95,7 @@ const LoginModal = ({ onClose }) => {
       
       if (password || requiresPassword) {
         // Login with email/mobile + password
-        response = await fetch('http://localhost:5000/api/users/login', {
+        response = await fetch(API_ENDPOINTS.USERS.LOGIN, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
@@ -110,7 +111,7 @@ const LoginModal = ({ onClose }) => {
           return;
         }
         
-        response = await fetch('http://localhost:5000/api/users/login-mobile', {
+        response = await fetch(API_ENDPOINTS.USERS.LOGIN_MOBILE, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 

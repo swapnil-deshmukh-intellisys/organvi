@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import API_ENDPOINTS from '../config/api';
 
 const UserContext = createContext();
 
@@ -71,7 +72,7 @@ export const UserProvider = ({ children }) => {
       const digits = String(mobile || phoneNumber || '').replace(/\D/g, '');
       if (!digits) return;
       
-      const response = await fetch(`http://localhost:5000/api/users/mobile/${digits}`);
+      const response = await fetch(API_ENDPOINTS.USERS.MOBILE(digits));
       if (response.ok) {
         const data = await response.json();
         loginUser(data.user, data.user?.mobile || digits, data.user?.countryCode || countryCode);
