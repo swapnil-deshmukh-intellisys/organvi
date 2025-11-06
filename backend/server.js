@@ -21,7 +21,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(morgan('dev'));
 
-const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017';
+const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://Shraddha_intellisys:5mW4EXctF9huknmD@cluster0.xgwvgez.mongodb.net/Organvi';
 const dbName = process.env.MONGODB_DB || 'organvi';
 
 mongoose
