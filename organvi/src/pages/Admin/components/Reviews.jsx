@@ -22,17 +22,22 @@ const Reviews = () => {
         ? API_ENDPOINTS.REVIEWS.ALL
         : `${API_ENDPOINTS.REVIEWS.ALL}?status=${filterStatus}`;
       
+      console.log('Fetching reviews from:', url);
       const response = await fetch(url);
       
       if (!response.ok) {
-        throw new Error('Failed to fetch reviews');
+        throw new Error(`Failed to fetch reviews: ${response.status} ${response.statusText}`);
       }
       
       const data = await response.json();
       setReviews(data);
     } catch (err) {
       console.error('Error fetching reviews:', err);
-      setError(err.message || 'Failed to load reviews');
+      if (err.message.includes('Failed to fetch') || err.message.includes('ERR_CONNECTION_REFUSED')) {
+        setError('Cannot connect to backend server. Please ensure the backend is running on ' + API_ENDPOINTS.BASE);
+      } else {
+        setError(err.message || 'Failed to load reviews');
+      }
     } finally {
       setLoading(false);
     }

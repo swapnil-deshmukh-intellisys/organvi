@@ -87,7 +87,7 @@ const ViewMoreDetails = ({ product, onClose }) => {
   }
 
   const [reviews, setReviews] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(product.image);
+  const [selectedImage, setSelectedImage] = useState(product?.image);
   const [loadingReviews, setLoadingReviews] = useState(false);
   const [submittingReview, setSubmittingReview] = useState(false);
   const [reviewMessage, setReviewMessage] = useState(null);
@@ -100,9 +100,16 @@ const ViewMoreDetails = ({ product, onClose }) => {
   }, [product]);
 
   const fetchReviews = async () => {
+    if (!product || !product.id) {
+      setLoadingReviews(false);
+      return;
+    }
+    
     setLoadingReviews(true);
     try {
-      const response = await fetch(API_ENDPOINTS.REVIEWS.BY_PRODUCT(product.id));
+      const url = API_ENDPOINTS.REVIEWS.BY_PRODUCT(product.id);
+      console.log('Fetching reviews from:', url);
+      const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
         setReviews(data);
@@ -185,8 +192,8 @@ const ViewMoreDetails = ({ product, onClose }) => {
       }
 
       const reviewData = {
-        productId: product.id,
-        productName: product.name,
+        productId: product?.id,
+        productName: product?.name,
         name: reviewForm.name,
         email: reviewForm.email,
         rating: reviewForm.rating,
@@ -335,16 +342,18 @@ const ViewMoreDetails = ({ product, onClose }) => {
   }, [reviewForm.reviewImage]);
 
   const handleAddToCart = () => {
+    if (!product) return;
     const weightOption = weightOptions.find(opt => opt.value === selectedWeight);
-    const price = Math.round(product.price * weightOption.multiplier);
-    const originalPrice = Math.round(product.originalPrice * weightOption.multiplier);
+    if (!weightOption) return;
+    const price = Math.round((product?.price || 0) * weightOption.multiplier);
+    const originalPrice = Math.round((product?.originalPrice || product?.price || 0) * weightOption.multiplier);
     
     const cartItem = {
-      id: `${product.id}-${selectedWeight}`,
-      name: product.name,
+      id: `${product?.id}-${selectedWeight}`,
+      name: product?.name,
       price: price,
       originalPrice: originalPrice,
-      image: product.image,
+      image: product?.image,
       weight: selectedWeight,
       quantity: quantity
     };
@@ -366,10 +375,10 @@ const ViewMoreDetails = ({ product, onClose }) => {
     
     // Trigger cart update event for navbar with updated cart count and success message
     const updatedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    const successMessage = `✅ ${product.name} added to cart successfully!`;
+    const successMessage = `✅ ${product?.name || 'Product'} added to cart successfully!`;
     
     // Debug: Show alert to confirm function is called
-    alert(`Adding ${product.name} to cart! Cart count: ${updatedCart.length}`);
+    alert(`Adding ${product?.name || 'Product'} to cart! Cart count: ${updatedCart.length}`);
     
     window.dispatchEvent(new CustomEvent('cartUpdated', { 
       detail: updatedCart.length,
@@ -381,9 +390,17 @@ const ViewMoreDetails = ({ product, onClose }) => {
     navigate('/cart');
   };
 
+  // Early return if product is not available
   if (!product) {
     return null;
   }
+
+  // Ensure selectedWeight is valid for current weightOptions
+  useEffect(() => {
+    if (weightOptions.length > 0 && !weightOptions.find(opt => opt.value === selectedWeight)) {
+      setSelectedWeight(weightOptions[0].value);
+    }
+  }, [weightOptions]);
 
   return (
     <div className="view-more-overlay" onClick={onClose}>
@@ -401,19 +418,19 @@ const ViewMoreDetails = ({ product, onClose }) => {
           {/* Left Side - Product Images */}
           <div className="product-images-section">
             <div className="main-product-image">
-              <img src={selectedImage} alt={product.name} />
+              <img src={selectedImage || product?.image} alt={product?.name || 'Product'} />
             </div>
             <div className="product-image-gallery">
               <div className="image-row">
                 <img 
-                  src={product.image} 
-                  alt={`${product.name} - Front`} 
+                  src={product?.image} 
+                  alt={`${product?.name || 'Product'} - Front`} 
                   className="gallery-image" 
-                  onClick={() => setSelectedImage(product.image)}
+                  onClick={() => setSelectedImage(product?.image)}
                 />
                 <img 
                   src={backSideImg} 
-                  alt={`${product.name} - Back`} 
+                  alt={`${product?.name || 'Product'} - Back`} 
                   className="gallery-image" 
                   onClick={() => setSelectedImage(backSideImg)}
                 />
@@ -423,20 +440,24 @@ const ViewMoreDetails = ({ product, onClose }) => {
 
           {/* Right Side - Product Information */}
           <div className="product-info-section">
-            <h1 className="product-title">{product.name}</h1>
+            <h1 className="product-title">{product?.name || 'Product'}</h1>
             
             <div className="product-pricing-inline">
-              <span className="current-price">₹{product.price}</span>
-              <span className="original-price">₹{product.originalPrice}</span>
-              <span className="discount">({product.discount}% Off)</span>
+              <span className="current-price">₹{product?.price || 0}</span>
+              {product?.originalPrice && (
+                <>
+                  <span className="original-price">₹{product.originalPrice}</span>
+                  {product?.discount && <span className="discount">({product.discount}% Off)</span>}
+                </>
+              )}
             </div>
 
             <div className="product-description">
               <h3>Product Description</h3>
               <p>
-                {product.description || `Premium quality organic ${product.name.toLowerCase()} sourced from the finest organic farms. Rich in nutrients and free from harmful pesticides. Perfect for healthy cooking and nutrition.`}
+                {product?.description || `Premium quality organic ${product?.name?.toLowerCase() || 'product'} sourced from the finest organic farms. Rich in nutrients and free from harmful pesticides. Perfect for healthy cooking and nutrition.`}
               </p>
-              {product.features && product.features.length > 0 ? (
+              {product?.features && product.features.length > 0 ? (
                 <ul className="product-features-list">
                   {product.features.map((feature, index) => (
                     <li key={index}>{feature}</li>
@@ -459,7 +480,7 @@ const ViewMoreDetails = ({ product, onClose }) => {
                 <select value={selectedWeight} onChange={(e) => setSelectedWeight(e.target.value)}>
                   {weightOptions.map(option => (
                     <option key={option.value} value={option.value}>
-                      {option.label} - ₹{Math.round(product.price * option.multiplier)}
+                      {option.label} - ₹{product ? Math.round(product.price * option.multiplier) : 0}
                     </option>
                   ))}
                 </select>
@@ -477,7 +498,7 @@ const ViewMoreDetails = ({ product, onClose }) => {
 
             <div className="product-actions">
               <button className="add-to-cart-btn" onClick={handleAddToCart}>
-                Add to Cart - ₹{Math.round(product.price * weightOptions.find(opt => opt.value === selectedWeight).multiplier) * quantity}
+                Add to Cart - ₹{product && weightOptions.find(opt => opt.value === selectedWeight) ? Math.round(product.price * weightOptions.find(opt => opt.value === selectedWeight).multiplier * quantity) : product?.price || 0}
               </button>
               <button className="buy-now-btn" onClick={() => {
                 handleAddToCart();
@@ -498,7 +519,7 @@ const ViewMoreDetails = ({ product, onClose }) => {
               <span className="info-arrow">{openDropdowns.idealForMaking ? '▲' : '▼'}</span>
             </div>
             <div className={`info-content ${!openDropdowns.idealForMaking ? 'collapsed' : ''}`}>
-              <p>{product.idealForMaking || 'Traditional Indian dal recipes, soups, curries, and healthy meals.'}</p>
+              <p>{product?.idealForMaking || 'Traditional Indian dal recipes, soups, curries, and healthy meals.'}</p>
             </div>
           </div>
           

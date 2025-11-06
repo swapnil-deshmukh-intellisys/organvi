@@ -2,7 +2,24 @@
 // This file centralizes all API endpoint URLs
 // In production, VITE_API_URL should be set in Vercel environment variables
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+// Ensure we always have a valid base URL
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && envUrl.trim() !== '') {
+    return envUrl.trim().replace(/\/$/, ''); // Remove trailing slash
+  }
+  // Default to Render backend deployment
+  // For local development with local backend, create .env file with: VITE_API_URL=http://localhost:5000
+  return 'https://organvi-backend.onrender.com';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
+// Debug: Log the API base URL (remove in production if needed)
+if (import.meta.env.DEV) {
+  console.log('API Base URL:', API_BASE_URL);
+  console.log('VITE_API_URL from env:', import.meta.env.VITE_API_URL);
+}
 
 export const API_ENDPOINTS = {
   // Base URL
