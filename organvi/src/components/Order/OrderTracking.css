@@ -1,7 +1,110 @@
 .order-tracking-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: transparent;
   padding: 20px;
+}
+
+.order-tracking-container.order-tracking-form-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  min-height: calc(100vh - 200px);
+}
+
+/* Track Order Form */
+.track-order-form-container {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.track-order-form-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin: 0 auto;
+}
+
+.track-order-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+}
+
+.track-order-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.track-order-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #000000;
+  display: block;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.track-order-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #ffffff;
+  color: #000000;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.track-order-input:focus {
+  outline: none;
+  border-color: #06402B;
+}
+
+.track-order-input::placeholder {
+  color: #999999;
+}
+
+.track-order-error {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin: -0.5rem 0 0 0;
+}
+
+.track-order-button {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(90deg, #4CAF50 0%, #2E7D32 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+}
+
+.track-order-button:hover {
+  background: linear-gradient(90deg, #45a049 0%, #1b5e20 100%);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
+  transform: translateY(-1px);
+}
+
+.track-order-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(46, 125, 50, 0.3);
 }
 
 .order-tracking {
@@ -493,6 +596,7 @@
   margin-top: 20px;
 }
 
+.track-another-btn,
 .view-orders-btn,
 .continue-shopping-btn {
   padding: 6px 12px;
@@ -506,6 +610,17 @@
   text-align: center;
   font-size: 0.7rem;
   min-width: 100px;
+}
+
+.track-another-btn {
+  background: linear-gradient(135deg, #FF9800, #F57C00);
+  color: white;
+  box-shadow: 0 2px 4px rgba(255, 152, 0, 0.3);
+}
+
+.track-another-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(255, 152, 0, 0.4);
 }
 
 .view-orders-btn {
@@ -657,6 +772,7 @@
     gap: 8px;
   }
 
+  .track-another-btn,
   .view-orders-btn,
   .continue-shopping-btn {
     min-width: 100%;
@@ -666,6 +782,45 @@
 }
 
 @media (max-width: 480px) {
+  .order-tracking-container.order-tracking-form-view {
+    padding: 1.5rem 1rem;
+    min-height: calc(100vh - 140px);
+  }
+
+  .track-order-form-container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .track-order-form-card {
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  .track-order-title {
+    font-size: 1.375rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+
+  .track-order-form {
+    gap: 1.25rem;
+  }
+
+  .track-order-label {
+    font-size: 0.9375rem;
+  }
+
+  .track-order-input {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.9375rem;
+  }
+
+  .track-order-button {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9375rem;
+  }
   .order-tracking {
     padding: 10px;
     margin: 5px;
@@ -704,9 +859,45 @@
     font-size: 1.1rem;
   }
 
+  .track-another-btn,
   .view-orders-btn,
   .continue-shopping-btn {
     font-size: 0.65rem;
     padding: 6px 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .order-tracking-container.order-tracking-form-view {
+    padding: 1rem 0.75rem;
+    min-height: calc(100vh - 120px);
+  }
+
+  .track-order-form-card {
+    padding: 1.5rem 1.25rem;
+    border-radius: 10px;
+  }
+
+  .track-order-title {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .track-order-form {
+    gap: 1rem;
+  }
+
+  .track-order-label {
+    font-size: 0.875rem;
+  }
+
+  .track-order-input {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .track-order-button {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
   }
 }

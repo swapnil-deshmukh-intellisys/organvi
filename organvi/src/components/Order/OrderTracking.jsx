@@ -13,13 +13,34 @@ const OrderTracking = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
   const [order, setOrder] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [trackingDetails, setTrackingDetails] = useState(null);
   const [shiprocketTracking, setShiprocketTracking] = useState(null);
   const [shiprocketError, setShiprocketError] = useState(null);
+  const [trackingInput, setTrackingInput] = useState('');
+  const [error, setError] = useState('');
+  const [availableOrderIds, setAvailableOrderIds] = useState([]);
+
+  // Debug: Log current orderId
+  console.log('OrderTracking - orderId from params:', orderId);
 
   useEffect(() => {
-    fetchOrderDetails();
+    // Get available order IDs when component mounts or when form is shown
+    const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
+    const orderIds = storedOrders.map(o => o.orderId || o.id).filter(Boolean);
+    setAvailableOrderIds(orderIds);
+    
+    if (orderId) {
+      setLoading(true);
+      fetchOrderDetails();
+    } else {
+      // Reset state when no orderId
+      setOrder(null);
+      setTrackingDetails(null);
+      setShiprocketTracking(null);
+      setShiprocketError(null);
+      setLoading(false);
+    }
   }, [orderId]);
 
   const testShiprocketConnection = async () => {
@@ -39,19 +60,31 @@ const OrderTracking = () => {
   const fetchOrderDetails = async () => {
     try {
       setLoading(true);
+      setError('');
       
-      // Test Shiprocket connection first
-      await testShiprocketConnection();
-      
-      // In a real app, this would fetch from your backend
+      // Get orders from localStorage
       const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
-      const foundOrder = storedOrders.find(o => o.orderId === orderId);
+      console.log('All stored orders:', storedOrders);
+      console.log('Looking for orderId:', orderId);
+      console.log('Available order IDs:', storedOrders.map(o => o.orderId || o.id));
+      
+      // Try to find order by orderId or id
+      const foundOrder = storedOrders.find(o => 
+        (o.orderId && o.orderId.toString() === orderId.toString()) || 
+        (o.id && o.id.toString() === orderId.toString())
+      );
       
       if (foundOrder) {
+        console.log('Order found:', foundOrder);
         setOrder(foundOrder);
         // Simulate tracking details
         const tracking = generateTrackingDetails(foundOrder);
         setTrackingDetails(tracking);
+
+        // Try Shiprocket connection (non-blocking)
+        testShiprocketConnection().catch(err => {
+          console.log('Shiprocket connection test failed (non-critical):', err);
+        });
 
         // Fetch Shiprocket tracking if shipment ID exists
         if (foundOrder.shipmentId) {
@@ -70,14 +103,18 @@ const OrderTracking = () => {
             setShiprocketError(error.message);
           }
         } else {
-          console.log('No shipment ID found for order:', foundOrder.orderId);
+          console.log('No shipment ID found for order:', foundOrder.orderId || foundOrder.id);
         }
       } else {
         // If order not found in localStorage, show error
+        console.log('Order not found. Available order IDs:', storedOrders.map(o => o.orderId || o.id));
         setOrder(null);
+        setError(`Order ID "${orderId}" not found. Available orders: ${storedOrders.map(o => o.orderId || o.id).join(', ') || 'None'}`);
       }
     } catch (error) {
       console.error('Error fetching order details:', error);
+      setError('Error loading order details: ' + error.message);
+      setOrder(null);
     } finally {
       setLoading(false);
     }
@@ -187,6 +224,73 @@ const OrderTracking = () => {
     if (status === order?.status) return '#2196F3';
     return '#E0E0E0';
   };
+
+  const getStatusText = (status) => {
+    const statusMap = {
+      'pending': 'Pending',
+      'confirmed': 'Confirmed',
+      'processing': 'Processing',
+      'shipped': 'Shipped',
+      'in_transit': 'In Transit',
+      'out_for_delivery': 'Out for Delivery',
+      'delivered': 'Delivered'
+    };
+    return statusMap[status] || 'Unknown';
+  };
+
+  const handleTrackOrder = (e) => {
+    e.preventDefault();
+    setError('');
+    
+    if (!trackingInput.trim()) {
+      setError('Please enter an Order ID or Tracking Number');
+      return;
+    }
+
+    // Navigate to the tracking page with the order ID
+    navigate(`/track-order/${trackingInput.trim()}`);
+  };
+
+  // Show tracking form if no orderId in URL
+  if (!orderId && !loading) {
+    return (
+      <div className="order-tracking-container order-tracking-form-view">
+        <div className="track-order-form-container">
+          <div className="track-order-form-card">
+            <h1 className="track-order-title">Track Your Order</h1>
+            <form onSubmit={handleTrackOrder} className="track-order-form">
+              <label htmlFor="tracking-input" className="track-order-label">
+                Order ID / Tracking Number
+              </label>
+              <input
+                id="tracking-input"
+                type="text"
+                className="track-order-input"
+                placeholder="Enter Order ID or Tracking Number"
+                value={trackingInput}
+                onChange={(e) => {
+                  setTrackingInput(e.target.value);
+                  setError('');
+                }}
+                autoFocus
+              />
+              {error && <p className="track-order-error">{error}</p>}
+              {availableOrderIds.length > 0 && (
+                <div className="available-orders-hint">
+                  <p style={{ fontSize: '0.875rem', color: '#666', margin: '0.5rem 0 0 0', textAlign: 'center' }}>
+                    <strong>Available Order IDs:</strong> {availableOrderIds.join(', ')}
+                  </p>
+                </div>
+              )}
+              <button type="submit" className="track-order-button">
+                Track Order
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -392,6 +496,9 @@ const OrderTracking = () => {
 
         {/* Action Buttons */}
         <div className="action-buttons">
+          <button onClick={() => navigate('/track-order')} className="track-another-btn">
+            Track Another Order
+          </button>
           <button onClick={() => navigate('/order-history')} className="view-orders-btn">
             View All Orders
           </button>

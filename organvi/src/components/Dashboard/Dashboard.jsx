@@ -83,20 +83,31 @@ const Dashboard = () => {
 
   // Keep wishlist in sync immediately on events, then refresh from backend
   useEffect(() => {
-    // Initialize from userData when available
-    if (userData?.wishlist) {
-      setWishlistItems(userData.wishlist);
-    } else {
-      try {
-        const local = JSON.parse(localStorage.getItem('wishlist')) || [];
-        setWishlistItems(local);
-      } catch {}
-    }
+    const loadWishlist = () => {
+      // Initialize from userData when available
+      if (userData?.wishlist && userData.wishlist.length > 0) {
+        setWishlistItems(userData.wishlist);
+        localStorage.setItem('wishlist', JSON.stringify(userData.wishlist));
+      } else {
+        try {
+          const local = JSON.parse(localStorage.getItem('wishlist')) || [];
+          setWishlistItems(local);
+        } catch {}
+      }
+    };
 
-    const handleWishlistUpdated = async () => {
+    loadWishlist();
+
+    const handleWishlistUpdated = (event) => {
       try {
         const local = JSON.parse(localStorage.getItem('wishlist')) || [];
         setWishlistItems(local);
+        // If event has detail (count), we know it was updated
+        if (event && typeof event.detail === 'number') {
+          // Wishlist was updated, ensure we have the latest data
+          const latest = JSON.parse(localStorage.getItem('wishlist')) || [];
+          setWishlistItems(latest);
+        }
       } catch {}
       // Don't call refreshUserData here - it causes infinite loops
       // The wishlist is already synced to backend by the component that updated it
@@ -301,7 +312,12 @@ const Dashboard = () => {
             
             <button 
               className={`nav-item ${activeSection === 'wishlist' ? 'active' : ''}`}
-              onClick={() => setActiveSection('wishlist')}
+              onClick={() => {
+                // Refresh wishlist when clicking on wishlist section
+                const local = JSON.parse(localStorage.getItem('wishlist')) || [];
+                setWishlistItems(local);
+                setActiveSection('wishlist');
+              }}
             >
               <Heart size={20} />
               <span>Wishlist ({wishlistItems.length})</span>
@@ -468,26 +484,36 @@ const Dashboard = () => {
 
           {activeSection === 'wishlist' && (
             <div className="wishlist-section">
-              <h2 className="section-title">Wishlist</h2>
+              <h2 className="section-title">Wishlist ({wishlistItems.length})</h2>
               {(wishlistItems.length === 0) ? (
                 <div className="empty-wishlist">
                   <Heart size={48} className="empty-icon" />
                   <p className="empty-text">Your wishlist is empty</p>
+                  <p className="empty-subtext">Click the heart icon on any product to add it to your wishlist</p>
                 </div>
               ) : (
                 <div className="wishlist-items">
-                  {wishlistItems.map((item, index) => (
-                    <div key={item.id || index} className="wishlist-item-card">
-                      {item.image && (
-                        <img src={item.image} alt={item.name} className="wishlist-item-image" />
-                      )}
-                      <div className="wishlist-item-details">
-                        <h4>{item.name}</h4>
-                        {item.price && <p className="wishlist-item-price">₹{item.price}</p>}
-                        {item.weight && <p className="wishlist-item-weight">{item.weight}</p>}
+                  {wishlistItems.map((item, index) => {
+                    // Handle both object and string/number formats
+                    const itemId = typeof item === 'object' ? item.id : item;
+                    const itemName = typeof item === 'object' ? item.name : 'Product';
+                    const itemImage = typeof item === 'object' ? item.image : null;
+                    const itemPrice = typeof item === 'object' ? item.price : null;
+                    const itemWeight = typeof item === 'object' ? item.weight : null;
+                    
+                    return (
+                      <div key={itemId || index} className="wishlist-item-card">
+                        {itemImage && (
+                          <img src={itemImage} alt={itemName} className="wishlist-item-image" />
+                        )}
+                        <div className="wishlist-item-details">
+                          <h4>{itemName}</h4>
+                          {itemPrice && <p className="wishlist-item-price">₹{itemPrice}</p>}
+                          {itemWeight && <p className="wishlist-item-weight">{itemWeight}</p>}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>

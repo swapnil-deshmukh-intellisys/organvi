@@ -1,0 +1,98 @@
+.announcement-bar {
+  background: #06402B;
+  color: white;
+  padding: 8px 0;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1001;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.announcement-content {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: scroll 30s linear infinite;
+  gap: 40px;
+}
+
+.announcement-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 0 20px;
+}
+
+.announcement-icon {
+  display: inline-flex;
+  align-items: center;
+  color: #fbbf24;
+  flex-shrink: 0;
+}
+
+.announcement-text {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause animation on hover */
+.announcement-bar:hover .announcement-content {
+  animation-play-state: paused;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .announcement-bar {
+    padding: 6px 0;
+  }
+
+  .announcement-text {
+    font-size: 11px;
+  }
+
+  .announcement-item {
+    gap: 6px;
+    padding: 0 15px;
+  }
+
+  .announcement-content {
+    gap: 30px;
+    animation-duration: 25s;
+  }
+
+  .announcement-icon {
+    display: none; /* Hide icons on mobile for cleaner look */
+  }
+}
+
+@media (max-width: 480px) {
+  .announcement-text {
+    font-size: 10px;
+  }
+
+  .announcement-item {
+    padding: 0 12px;
+  }
+
+  .announcement-content {
+    gap: 25px;
+    animation-duration: 20s;
+  }
+}
+

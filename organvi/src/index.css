@@ -52,6 +52,29 @@ pre, code {
   overflow-x: hidden;
 }
 
+/* Add padding-top to main content to account for fixed AnnouncementBar and navbar */
+.App > main {
+  padding-top: 132px; /* AnnouncementBar (~32px) + Navbar height (100px) on desktop */
+}
+
+@media (max-width: 1023px) {
+  .App > main {
+    padding-top: 142px; /* AnnouncementBar (~32px) + Navbar height (110px) on tablet */
+  }
+}
+
+@media (max-width: 768px) {
+  .App > main {
+    padding-top: 118px; /* AnnouncementBar (~28px) + Navbar height (90px) on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .App > main {
+    padding-top: 113px; /* AnnouncementBar (~28px) + Navbar height (85px) on small mobile */
+  }
+}
+
 /* Prevent any scroll effects on cards */
 .home {
   width: 100%;

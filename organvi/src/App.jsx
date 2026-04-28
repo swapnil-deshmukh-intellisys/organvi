@@ -1,8 +1,8 @@
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { UserProvider } from './context/UserContext';
+import AnnouncementBar from './components/AnnouncementBar/AnnouncementBar';
 import Navbar from './components/Navbar/Navbar';
-import Categories from './components/Categories/Categories';
 import Footer from './components/Footer/Footer';
 import Chatbot from './components/Chatbot/Chatbot';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
@@ -33,6 +33,9 @@ import OrderSuccess from './pages/OrderSuccess/OrderSuccess';
 import MyOrders from './pages/MyOrders/MyOrders';
 import OrderDetails from './pages/OrderDetails/OrderDetails';
 import Admin from './pages/Admin/Admin';
+import Blog from './pages/Blog/Blog';
+import BlogDetail from './pages/BlogDetail/BlogDetail';
+import ProductDetail from './pages/ProductDetail/ProductDetail';
 
 function App() {
   return (
@@ -40,8 +43,8 @@ function App() {
       <Router>
         <ScrollToTop />
         <div className="App">
+          <AnnouncementBar />
           <Navbar />
-          <Categories />
           <main>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -65,12 +68,17 @@ function App() {
               <Route path="/account" element={<Account />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+              <Route path="/track-order" element={<OrderTracking />} />
+              <Route path="/track-order/:orderId" element={<OrderTracking />} />
               <Route path="/order-tracking/:orderId" element={<OrderTracking />} />
               <Route path="/order-history" element={<OrderHistory />} />
               <Route path="/payment-success" element={<OrderSuccess />} />
               <Route path="/account/orders" element={<MyOrders />} />
               <Route path="/account/orders/:id" element={<OrderDetails />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:id" element={<BlogDetail />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
             </Routes>
           </main>
           <Footer />

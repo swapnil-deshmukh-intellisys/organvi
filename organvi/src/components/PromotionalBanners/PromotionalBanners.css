@@ -1,0 +1,81 @@
+.promotional-banners-section {
+  width: 100%;
+  padding: 40px 20px;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: none;
+}
+
+.promotional-banners-section::after {
+  display: none;
+}
+
+.promotional-banners-section::before {
+  display: none;
+}
+
+.promotional-banners-container {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.promotional-banner {
+  flex: 1;
+  max-width: 600px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.promotional-banner:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.banner-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Tablet styles for banners */
+@media (max-width: 1024px) {
+  .promotional-banners-section {
+    padding: 35px 20px;
+  }
+
+  .promotional-banners-container {
+    gap: 15px;
+    flex-direction: row;
+  }
+
+  .promotional-banner {
+    max-width: 48%;
+  }
+}
+
+/* Mobile styles for banners */
+@media (max-width: 768px) {
+  .promotional-banners-section {
+    padding: 30px 16px;
+  }
+
+  .promotional-banners-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .promotional-banner {
+    max-width: 100%;
+  }
+}
+
